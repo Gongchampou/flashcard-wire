@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Mind Map Generator</title>
+    
+    <style>
+      :root {
+        --color-bg: #f4f7f9;
+        --color-surface: #ffffff;
+        --color-primary: #e3e8ed;
+        --color-secondary: #e53935;
+        --color-text: #1a202c;
+        --color-accent: #1d4ed8;
+      }
+      .dark {
+        --color-bg: #1a1a2e;
+        --color-surface: #16213e;
+        --color-primary: #0f3460;
+        --color-secondary: #e94560;
+        --color-text: #dcdcdc;
+        --color-accent: #5372f0;
+      }
+    </style>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'brand-bg': 'var(--color-bg)',
+              'brand-surface': 'var(--color-surface)',
+              'brand-primary': 'var(--color-primary)',
+              'brand-secondary': 'var(--color-secondary)',
+              'brand-text': 'var(--color-text)',
+              'brand-accent': 'var(--color-accent)',
+            },
+          },
+        },
+      }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js`;
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-brand-bg text-brand-text">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

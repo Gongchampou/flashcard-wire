@@ -46,7 +46,7 @@ The application requires a Google Gemini API key to function.
 
 3.  **Add your key**: Open the new `.env` file and add your API key.
     ```
-    API_KEY="YOUR_GEMINI_API_KEY_HERE"
+    GEMINI_API_KEY="YOUR_GEMINI_API_KEY_HERE"
     ```
 
 ### 4. Vite Configuration (Important!)

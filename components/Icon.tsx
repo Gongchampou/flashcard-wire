@@ -1,10 +1,15 @@
 import React from 'react';
 
+/** Props for the generic inline SVG `Icon` component. */
 interface IconProps {
   type: 'generate' | 'download' | 'loading' | 'upload' | 'sun' | 'moon' | 'search' | 'sidebar-close' | 'sidebar-open';
   className?: string;
 }
 
+/**
+ * Small collection of inlined SVGs keyed by `type`.
+ * Tailwind classes can be passed via `className` for sizing/coloring.
+ */
 export const Icon: React.FC<IconProps> = ({ type, className = 'w-6 h-6' }) => {
   switch (type) {
     case 'generate':
@@ -27,8 +32,19 @@ export const Icon: React.FC<IconProps> = ({ type, className = 'w-6 h-6' }) => {
       );
     case 'loading':
       return (
-        <svg xmlns="http://www.w3.org/2000/svg" className={`${className} animate-spin`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+        // Arc spinner: 10 dots along a 270° arc with trailing fade, leaving a gap
+        <svg xmlns="http://www.w3.org/2000/svg" className={`${className} animate-spin`} viewBox="0 0 24 24" fill="none">
+          {/* angles used: 300°, 330°, 0°, 30°, 60°, 90°, 120°, 150°, 180°, 210° */}
+          <circle cx="16" cy="5.072" r="1.8" className="text-brand-accent" fill="currentColor" fillOpacity="1" />
+          <circle cx="18.928" cy="8" r="1.8" className="text-brand-accent" fill="currentColor" fillOpacity="0.92" />
+          <circle cx="20" cy="12" r="1.8" className="text-brand-accent" fill="currentColor" fillOpacity="0.82" />
+          <circle cx="18.928" cy="16" r="1.8" className="text-brand-accent" fill="currentColor" fillOpacity="0.72" />
+          <circle cx="16" cy="18.928" r="1.8" className="text-brand-accent" fill="currentColor" fillOpacity="0.62" />
+          <circle cx="12" cy="20" r="1.8" className="text-brand-accent" fill="currentColor" fillOpacity="0.52" />
+          <circle cx="8" cy="18.928" r="1.8" className="text-brand-accent" fill="currentColor" fillOpacity="0.42" />
+          <circle cx="5.072" cy="16" r="1.8" className="text-brand-accent" fill="currentColor" fillOpacity="0.32" />
+          <circle cx="4" cy="12" r="1.8" className="text-brand-accent" fill="currentColor" fillOpacity="0.22" />
+          <circle cx="5.072" cy="8" r="1.8" className="text-brand-accent" fill="currentColor" fillOpacity="0.14" />
         </svg>
       );
     case 'sun':

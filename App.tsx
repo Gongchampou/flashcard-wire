@@ -9,6 +9,10 @@ import { Icon } from './components/Icon';
 // These will be available globally from the scripts in index.html
 declare const jspdf: any;
 
+/**
+ * Convert the hierarchical mind map into a plain text outline
+ * for simple PDF export. Indents increase with `depth`.
+ */
 const formatMindMapForPdf = (node: MindMapNodeData, depth = 0): string => {
   let result = '';
   const indent = '  '.repeat(depth);
@@ -34,6 +38,7 @@ const App: React.FC = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
 
+  // Persisted theme preference (defaults to OS prefers-color-scheme)
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     const savedTheme = localStorage.getItem('mind-map-theme');
     if (savedTheme === 'light' || savedTheme === 'dark') {
@@ -42,6 +47,7 @@ const App: React.FC = () => {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   });
 
+  // DFS search across the tree returning nodes whose topic/content matches `query`
   const searchInMindMap = useCallback((query: string, node: MindMapNodeData | null): MindMapNodeData[] => {
     if (!node) return [];
     let matches: MindMapNodeData[] = [];
@@ -56,6 +62,7 @@ const App: React.FC = () => {
     return matches;
   }, []);
 
+  // Apply theme class to <html> and persist to localStorage
   useEffect(() => {
     const root = window.document.documentElement;
     root.classList.remove('light', 'dark');
@@ -63,6 +70,7 @@ const App: React.FC = () => {
     localStorage.setItem('mind-map-theme', theme);
   }, [theme]);
 
+  // Recompute search results when query or data changes
   useEffect(() => {
     if (searchQuery.trim() && mindMapData) {
       const results = searchInMindMap(searchQuery, mindMapData);
@@ -77,6 +85,7 @@ const App: React.FC = () => {
     setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
   };
 
+  // Call Gemini service to transform input text into mind map structure
   const handleGenerateMindMap = useCallback(async () => {
     if (!documentText.trim()) {
       setError('Please enter some text to generate a mind map.');
@@ -96,6 +105,7 @@ const App: React.FC = () => {
     }
   }, [documentText]);
 
+  // Render a lightweight text outline to a multi-page PDF via jsPDF
   const handleExportPdf = useCallback(() => {
     if (!mindMapData) {
       setError('Please generate a mind map first.');
@@ -136,10 +146,12 @@ const App: React.FC = () => {
     }
   }, [mindMapData]);
 
+  // Programmatically open the hidden file input
   const handleFileImportClick = () => {
     fileInputRef.current?.click();
   };
 
+  // Read the selected file and extract plain text
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (fileInputRef.current) {
@@ -160,6 +172,7 @@ const App: React.FC = () => {
     }
   };
   
+  // Quick demo content used when the user clicks "sample text"
   const sampleText = `The Solar System consists of the Sun and the objects that orbit it. The largest objects are the eight planets. The terrestrial planets are Mercury, Venus, Earth, and Mars. They are smaller and made of rock and metal. The gas giants are Jupiter and Saturn, composed mainly of hydrogen and helium. The ice giants are Uranus and Neptune, containing rock, ice, and a mixture of water, methane, and ammonia. Earth has one moon, while Jupiter has over 70, including its four largest: Io, Europa, Ganymede, and Callisto. Mars is known for its red color, caused by iron oxide on its surface.`;
 
   return (

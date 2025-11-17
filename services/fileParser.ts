@@ -2,6 +2,11 @@
 declare const pdfjsLib: any;
 declare const mammoth: any;
 
+/**
+ * Extracts plain text from a supported file by delegating to a specific reader.
+ * Currently supports: .txt, .pdf, .docx
+ * Other Microsoft formats (.doc, .ppt, .pptx) are explicitly rejected for now.
+ */
 export const extractTextFromFile = async (file: File): Promise<string> => {
   const extension = file.name.split('.').pop()?.toLowerCase();
   
@@ -21,6 +26,9 @@ export const extractTextFromFile = async (file: File): Promise<string> => {
   }
 };
 
+/**
+ * Reads the entire text file into a string using the FileReader API.
+ */
 const readTextFile = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -34,6 +42,10 @@ const readTextFile = (file: File): Promise<string> => {
   });
 };
 
+/**
+ * Uses pdf.js to iterate through pages and concatenate extracted text.
+ * Adds blank line separators between pages for readability.
+ */
 const readPdfFile = async (file: File): Promise<string> => {
   const arrayBuffer = await file.arrayBuffer();
   const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
@@ -47,8 +59,12 @@ const readPdfFile = async (file: File): Promise<string> => {
   return textContent;
 };
 
+/**
+ * Uses mammoth to extract raw text from a .docx ArrayBuffer.
+ */
 const readDocxFile = async (file: File): Promise<string> => {
   const arrayBuffer = await file.arrayBuffer();
   const result = await mammoth.extractRawText({ arrayBuffer });
   return result.value;
 };
+

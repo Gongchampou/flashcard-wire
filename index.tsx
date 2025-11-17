@@ -1,4 +1,4 @@
-
+// Entry point: create a React root and render <App /> into #root
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
@@ -9,6 +9,7 @@ if (!rootElement) {
 }
 
 const root = ReactDOM.createRoot(rootElement);
+// StrictMode helps detect potential issues in development
 root.render(
   <React.StrictMode>
     <App />
